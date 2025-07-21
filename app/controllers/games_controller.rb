@@ -1,20 +1,41 @@
+require 'open-uri'
+
 class GamesController < ApplicationController
   def new
     @letters = Array.new(10) { ('A'..'Z').to_a.sample }
+    session[:grid] = @letters
   end
 
   def score
-    @word = params[:word].to_s.upcase
-    @grid = params[:grid].to_s.split(',')
-
-    if !word_in_grid?(@word, @letters)
-      @result = "Sorry, #{@word} can't be builf form #{@letters.join(',')}"
-    elsif !english_word?(@word)
-      @result = "Sorry, #{@word} is not a valid English word"
-    else
-      @result = "Congratulations, #{@word} is valid!"
+    if params[:word].blank?
+      redirect_to new_path, alert: "Please enter a word before submitting"
+      return
     end
+
+    @word = params[:word].upcase
+    @grid = session[:grid]
+
+    if @grid.nil?
+      redirect_to new_game_path, alert: "Grid expired. Please start new game."
+      return
+    end
+
+    if !word_in_grid?(@word, @grid)
+      @message = "The word can't be build out of the grid"
+      @score = 0
+    elsif !english_word?(@word)
+      @message = "That's a not a valid English word"
+      @score = 0
+    else
+      @message = "Well done! #{helpers.pluralize(@word.length, 'point')} scored."
+      @score = @word.length
+    end
+
+    session[:total_score] ||= 0
+    session[:total_score] += @score
+    @total_score = session[:total_score]
   end
+
 
   private
 

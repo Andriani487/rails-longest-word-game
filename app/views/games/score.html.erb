@@ -1,9 +1,16 @@
-<h1>Games#score</h1>
-<p>Find me in app/views/games/score.html.erb</p>
+<div class="container mt-5">
+  <h1 class="text-primary">Your word: <%= @word %></h1>
+  <p><strong>Grid:</strong> <%= @grid.join(" ") %></p>
 
-<p>Grid was:</p>
-<ul class="letter-grid">
-  <% @grid.each do |letter| %>
-    <li><%= letter %></li>
-  <% end %>
-</ul>
+  <div class="alert <%= @score.to_i > 0 ? "alert-success" : "alert-danger" %> mt-4">
+    <h4 class="alert-heading">
+      <%= @score.to_i > 0 ? "Congratulations!" : "Opps!" %>
+    </h4>
+      <p><%= @message %></p>
+  </div>
+
+  <p><strong>Round score:</strong> <%= @score %></p>
+  <p><strong>Total score:</strong> <%= @total_score %></p>
+
+<%= link_to "Play again", new_game_path, class:"btn btn-primary mt-3" %>
+</div>

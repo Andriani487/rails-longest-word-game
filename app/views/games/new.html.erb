@@ -1,17 +1,21 @@
-<h1>New Games</h1>
-<p>Here is your random grid:</p>
+<h1 class="text-center text-primary mt-4">New Games</h1>
+<p class="text-center">Here is your random grid. Find the longest word!</p>
 
-<div class="letter-grid">
+<div class="letter-grid mb-3">
   <% @letters.each do |letter| %>
-    <span><%= letter %></span>
+    <span class="badge bg-primary fs-4 mx-1"><%= letter %></span>
   <% end %>
 </div>
 
-<form action="/score" method="post" data-turbo="false">
-  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-  <%= hidden_field_tag :grid, @letters.join(",") %>
+<div class="container w-50">
+  <form action="/score" method="post" data-turbo="false">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 
-  <label for="word">What is the longest word you can find?</label>
-  <input type="text" name="word" id="word" required pattern="[A-Za-z]+">
-  <input type="submit" value="Play">
-</form>
+  <div class="mb-3"></div>
+    <label for="word" class="form-label">What is the longest word you can find?</label>
+    <input type="text" name="word" id="word" required pattern="[A-Za-z]+" class="form-control mb-2">
+  </div>
+
+  <input type="submit" value="Play" class="btn btn-success w-100">
+  </form>
+</div>
